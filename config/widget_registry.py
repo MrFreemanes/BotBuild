@@ -1,0 +1,8 @@
+from config.action_config import ActionType
+from gui.widgets.actions import *
+
+WIDGET_REGISTRY = {
+    ActionType.CLICK: ClickActionWidget,
+    ActionType.WAIT: WaitActionWidget,
+    ActionType.IF: IfActionWidget
+}
