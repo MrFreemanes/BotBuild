@@ -4,7 +4,9 @@ from config.action_config import ActionType
 from gui.base_window import BaseWindow
 from gui.models.graph_model import GraphModel
 from gui.widgets.graph_view import GraphView
+from gui.widgets.sidebar.sidebar_widget import Sidebar
 from utils.file_io import load_bot_json, save_bot_json
+
 
 class MainWindow(BaseWindow):
     def setup_ui(self) -> None:
@@ -18,7 +20,10 @@ class MainWindow(BaseWindow):
 
         save_btn = QPushButton('Save')
         load_btn = QPushButton('load')
+        sidebar = Sidebar()
+
         layout_btn = QVBoxLayout()
+        layout_btn.addWidget(sidebar)
         layout_btn.addWidget(save_btn)
         layout_btn.addWidget(load_btn)
 

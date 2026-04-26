@@ -1,3 +1,4 @@
+from config.action_config import ActionType
 from gui.helpers.connection_controller import ConnectionController
 from gui.models.graph_model import GraphModel
 from gui.widgets.potrs.port_widget import PortWidget
@@ -28,6 +29,11 @@ class InteractionHandler:
         if target_port:
             self.connection_controller.finish_connect(target_port)
         self.connection_controller.cleanup()
+
+    def drop_event_view(self, event, view):
+        action_type = ActionType(event.mimeData().text())
+        scene_pos = view.mapToScene(event.pos())
+        self.model.add_node(action_type, (scene_pos.x(), scene_pos.y()))
 
     def node_mouse_press(self, event, node_widget):
         self.drag_pos = (event.pos().x(), event.pos().y())

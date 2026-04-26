@@ -16,6 +16,7 @@ class GraphView(QGraphicsView):
     def __init__(self, scene: QGraphicsScene, model: GraphModel):
         super().__init__(scene)
         self.setDragMode(QGraphicsView.ScrollHandDrag)
+        self.setAcceptDrops(True)
 
         self.scene = scene
         self.model = model
@@ -98,6 +99,16 @@ class GraphView(QGraphicsView):
     def mouseReleaseEvent(self, event, /):
         self.interaction_handler.view_mouse_release(event, self)
         super().mouseReleaseEvent(event)
+
+    def dragEnterEvent(self, event, /):
+        if event.mimeData().hasText():
+            event.accept()
+
+    def dragMoveEvent(self, event, /):
+        event.accept()
+
+    def dropEvent(self, event, /):
+        self.interaction_handler.drop_event_view(event, self)
 
     def clear_scene(self):
         self.node_widgets.clear()
