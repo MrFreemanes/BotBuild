@@ -9,11 +9,12 @@ from gui.widgets.potrs.port_widget import PortWidget
 
 
 class NodeWidget(QGraphicsRectItem):
-    def __init__(self, model: GraphModel, node: NodeModel):
+    def __init__(self, model: GraphModel, node: NodeModel, interaction_handler):
         super().__init__()
 
         self.model = model
         self.node = node
+        self.interaction_handler = interaction_handler
         self.setPos(*self.node.get_pos())
         self.setBrush(QBrush(QColor(50, 100, 200)))
         self.setFlag(QGraphicsRectItem.ItemIsMovable)
@@ -36,8 +37,6 @@ class NodeWidget(QGraphicsRectItem):
 
         # Порты
         self.input_ports_widget, self.output_ports_widget = self.create_ports()
-
-        self.drag_pos = None
 
     def create_widget(self) -> BaseActionWidget:
         return WIDGET_REGISTRY[self.node.action_type](
@@ -67,13 +66,8 @@ class NodeWidget(QGraphicsRectItem):
         return in_ports, out_ports
 
     def mousePressEvent(self, event, /):
-        self.drag_pos = (event.pos().x(), event.pos().y())
+        self.interaction_handler.node_mouse_press(event, self)
         event.accept()
 
     def mouseMoveEvent(self, event, /):
-        if not self.drag_pos:
-            return
-
-        x = self.pos().x() - (self.drag_pos[0] - event.pos().x())
-        y = self.pos().y() - (self.drag_pos[1] - event.pos().y())
-        self.model.set_node_pos(self.node.id, (x, y))
+        self.interaction_handler.node_mouse_move(event, self)

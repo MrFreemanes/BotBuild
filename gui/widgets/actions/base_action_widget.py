@@ -21,7 +21,7 @@ class BaseActionWidget(QWidget):
         logging.config.dictConfig(cfg)
         self.logger = logging.getLogger('log_widget')
 
-        self.model: GraphModel = model
+        self.model = model
         self.node = node
         self._params = self.node.get_params()
 

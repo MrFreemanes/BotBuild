@@ -4,9 +4,9 @@ from logging import config
 
 from PySide6.QtCore import QObject
 
-from config.widget_config import DirectionType
 from gui.models.port_model import PortModel
 from logs.logger_cfg import cfg
+from config.widget_config import DirectionType
 from config.node_registry import NODE_REGISTRY
 from config.action_config import ActionType
 
@@ -23,9 +23,9 @@ class NodeModel(QObject):
         self._pos = pos
         self._params = NODE_REGISTRY[self.action_type]['base_params'].copy()
 
-        self.inputs = {name: PortModel(self.id, name, DirectionType.INPUT) for name in
+        self.inputs = {name: PortModel(self.id, self.action_type, name, DirectionType.INPUT) for name in
                        NODE_REGISTRY[self.action_type]['ports']['inputs']}
-        self.outputs = {name: PortModel(self.id, name, DirectionType.OUTPUT) for name in
+        self.outputs = {name: PortModel(self.id, self.action_type, name, DirectionType.OUTPUT) for name in
                         NODE_REGISTRY[self.action_type]['ports']['outputs']}
 
         self.logger.debug('NodeModel created, id: %s, action_type: %s, pos: %s, params %s',

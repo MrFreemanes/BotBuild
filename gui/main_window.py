@@ -13,7 +13,6 @@ class MainWindow(BaseWindow):
 
         self.scene = QGraphicsScene()
         self.scene.setSceneRect(-2000, -2000, 4000, 4000)
-
         self.model = GraphModel()
         self.view = GraphView(self.scene, self.model)
 
@@ -41,6 +40,7 @@ class MainWindow(BaseWindow):
         self.model.add_node(ActionType.CLICK, (130, 130))
         self.model.add_node(ActionType.WAIT, (150, 150))
         self.model.add_node(ActionType.IF, (110, 110))
+        self.model.add_node(ActionType.SEARCH_FOR_IF, (110, 110))
 
     def connect_widget(self) -> None:
         """Подключение виджетов к функциям."""

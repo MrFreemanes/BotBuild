@@ -1,6 +1,8 @@
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
 
+from gui.helpers.connection_controller import ConnectionController
+from gui.helpers.interaction_handler import InteractionHandler
 from gui.models.edge_model import EdgeModel
 from gui.models.graph_model import GraphModel
 from gui.models.node_model import NodeModel
@@ -17,11 +19,10 @@ class GraphView(QGraphicsView):
 
         self.scene = scene
         self.model = model
+        self.connection_controller = ConnectionController(self.model, self)
+        self.interaction_handler = InteractionHandler(self.model, self.connection_controller)
         self.node_widgets: dict[str, NodeWidget] = {}
         self.edge_widgets: dict[str, EdgeWidget] = {}
-
-        self.drag_port = None
-        self.temp_edge = None
 
         self.model.node_added.connect(self.node_widget_add)
         self.model.node_update_pos.connect(self.node_widget_update_pos)
@@ -34,7 +35,7 @@ class GraphView(QGraphicsView):
 
     @Slot(NodeModel)
     def node_widget_add(self, node: NodeModel):
-        node_widget = NodeWidget(self.model, node)
+        node_widget = NodeWidget(self.model, node, self.interaction_handler)
         self.node_widgets[node.id] = node_widget
         self.scene.addItem(node_widget)
 
@@ -68,47 +69,34 @@ class GraphView(QGraphicsView):
     def edge_widget_update_pos(self, node: NodeModel):
         node_widget = self.node_widgets[node.id]
         for port in node_widget.output_ports_widget.values():
-            if port.edge_widget is not None:
-                port.edge_widget.update_path()
+            if port.edge_id is not None:
+                self.edge_widgets[port.edge_id].update_path()
         for port in node_widget.input_ports_widget.values():
-            if port.edge_widget is not None:
-                port.edge_widget.update_path()
+            if port.edge_id is not None:
+                self.edge_widgets[port.edge_id].update_path()
 
     @Slot(EdgeModel)
     def edge_widget_delete(self, edge: EdgeModel):
         edge_widget = self.edge_widgets[edge.id]
+        edge_widget.to_port.edge_id = None
+        edge_widget.from_port.edge_id = None
         del self.edge_widgets[edge.id]
         self.scene.removeItem(edge_widget)
 
-    def start_connection(self, port_widget):
-        self.drag_port = port_widget
+    def temp_edge_create(self, port_widget: PortWidget):
+        temp_edge = EdgeTemporaryWidget(port_widget)
+        self.scene.addItem(temp_edge)
+        return temp_edge
 
-        self.temp_edge = EdgeTemporaryWidget(port_widget)
-        self.scene.addItem(self.temp_edge)
-
-    def remove_connection(self, edge_widget: EdgeWidget):
-        self.model.delete_edge(edge_widget.edge.id)
+    def temp_edge_delete(self, temp_edge: EdgeTemporaryWidget):
+        self.scene.removeItem(temp_edge)
 
     def mouseMoveEvent(self, event, /):
-        if self.temp_edge:
-            scene_pos = self.mapToScene(event.pos())
-            self.temp_edge.set_temp_pos(scene_pos)
+        self.interaction_handler.view_mouse_move(event, self)
         super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event, /):
-        if self.temp_edge:
-            scene_pos = self.mapToScene(event.pos())
-            items = self.scene.items(scene_pos)
-            target_port = None
-            for item in items:
-                if isinstance(item, PortWidget):
-                    target_port = item
-                    break
-            if target_port:
-                self.model.add_edge(self.drag_port.port, target_port.port)
-            self.scene.removeItem(self.temp_edge)
-            self.temp_edge = None
-            self.drag_port = None
+        self.interaction_handler.view_mouse_release(event, self)
         super().mouseReleaseEvent(event)
 
     def clear_scene(self):

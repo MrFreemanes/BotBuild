@@ -19,8 +19,8 @@ class EdgeModel(QObject):
         self.to_port_name = self.to_port.name
         self.to_node_id = self.to_port.node_id
 
-        self.from_port.busy()
-        self.to_port.busy()
+        self.from_port.busy(self.id)
+        self.to_port.busy(self.id)
 
     def to_dict(self) -> dict:
         return {
@@ -33,3 +33,7 @@ class EdgeModel(QObject):
 
     def is_there_connection(self, node_id) -> bool:
         return self.from_node_id == node_id or self.to_node_id == node_id
+
+    def __del__(self):
+        self.from_port.free()
+        self.to_port.free()

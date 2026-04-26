@@ -6,7 +6,7 @@ from typing import Any, Callable, Iterable
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QMainWindow, QApplication, QWidget
 
-from gui.dialogs.error_dialog import ErrorDialog
+from gui.widgets.dialogs.error_dialog import ErrorDialog
 from core.bridges.bridge import Bridge
 from logs.logger_cfg import cfg
 from config.config import Result, Status, TaskType

@@ -1,7 +1,6 @@
-from PySide6.QtWidgets import QLabel, QComboBox, QHBoxLayout, QSpinBox
+from PySide6.QtWidgets import QLabel, QHBoxLayout, QSpinBox
 
 from gui.widgets.actions.base_action_widget import BaseActionWidget
-from config.action_config import ClickType
 
 
 class WaitActionWidget(BaseActionWidget):

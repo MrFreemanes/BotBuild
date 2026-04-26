@@ -15,8 +15,8 @@ class EdgeWidget(QGraphicsPathItem):
         self.from_port = from_port
         self.to_port = to_port
 
-        self.from_port.edge_widget = self
-        self.to_port.edge_widget = self
+        self.from_port.edge_id = self.edge.id
+        self.to_port.edge_id = self.edge.id
 
         self.update_path()
 
@@ -35,3 +35,7 @@ class EdgeWidget(QGraphicsPathItem):
         )
 
         self.setPath(path)
+
+    def __del__(self):
+        self.from_port.edge_id = None
+        self.to_port.edge_id = None

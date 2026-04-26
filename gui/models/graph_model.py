@@ -34,14 +34,12 @@ class GraphModel(QObject):
             return
         if port_1.node_id == port_2.node_id:
             return
-        if not port_1.is_free or not port_2.is_free:
+        if port_1.edge_id is not None or port_2.edge_id is not None:
             return
         from_port = port_1 if port_1.direction == DirectionType.OUTPUT else port_2
         to_port = port_2 if port_2.direction == DirectionType.INPUT else port_1
 
-        # проверки
         edge = EdgeModel(from_port, to_port)
-
         self.edges[edge.id] = edge
         self.logger.info('Add edge, from_port_name: %s, to_port_name: %s', from_port.name, to_port.name)
 
@@ -67,6 +65,7 @@ class GraphModel(QObject):
     def set_node_pos(self, node_id: str, pos: tuple) -> None:
         node = self.nodes[node_id]
         node.set_pos(pos)
+
         self.node_update_pos.emit(node)
         self.edge_update_pos.emit(node)
 

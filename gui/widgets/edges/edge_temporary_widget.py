@@ -1,7 +1,6 @@
 from PySide6.QtGui import QPainterPath
 from PySide6.QtWidgets import QGraphicsPathItem
 
-from gui.models.edge_model import EdgeModel
 from gui.widgets.potrs.port_widget import PortWidget
 
 

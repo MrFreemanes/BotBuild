@@ -4,5 +4,6 @@ from gui.widgets.actions import *
 WIDGET_REGISTRY = {
     ActionType.CLICK: ClickActionWidget,
     ActionType.WAIT: WaitActionWidget,
-    ActionType.IF: IfActionWidget
+    ActionType.IF: IfActionWidget,
+    ActionType.SEARCH_FOR_IF: SearchForIfActionWidget
 }

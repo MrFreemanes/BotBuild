@@ -3,7 +3,7 @@ from config.action_config import ActionType, ClickType
 NODE_REGISTRY = {
     ActionType.CLICK: {
         'base_params': {
-            'ClickType': ClickType.RIGHT.value
+            'ClickType': ClickType.LEFT.value
         },
         'ports': {
             'inputs': ['input'],
@@ -24,6 +24,13 @@ NODE_REGISTRY = {
         'ports': {
             'inputs': ['input'],
             'outputs': ['action', 'true', 'false']
+        }
+    },
+    ActionType.SEARCH_FOR_IF: {
+        'base_params': {},
+        'ports': {
+            'inputs': ['if'],
+            'outputs': []
         }
     }
 }

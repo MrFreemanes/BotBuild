@@ -11,14 +11,11 @@ class PortWidget(QGraphicsEllipseItem):
         self.setAcceptHoverEvents(True)
 
         self.port = port
-        self.edge_widget = None
+        self.edge_id = port.edge_id
 
     def get_center(self):
         return self.scenePos() + self.boundingRect().center()
 
     def mousePressEvent(self, event, /):
         view = self.scene().views()[0]
-
-        if not self.port.is_free and self.edge_widget is not None:
-            view.remove_connection(self.edge_widget)
-        view.start_connection(self)
+        view.interaction_handler.port_mouse_press(event, self)
