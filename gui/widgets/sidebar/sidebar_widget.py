@@ -14,7 +14,7 @@ class Sidebar(QTreeWidget):
 
         self.build_tree()
 
-    def build_tree(self):
+    def build_tree(self) -> None:
         actions = QTreeWidgetItem(['Actions'])
         self.addTopLevelItem(actions)
 

@@ -33,7 +33,7 @@ class BaseActionWidget(QWidget):
         self.set_up()
 
     @abstractmethod
-    def set_up(self):
+    def set_up(self) -> None:
         pass
 
     def set_params(self, params: dict) -> None:

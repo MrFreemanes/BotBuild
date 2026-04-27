@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QPointF
 from PySide6.QtWidgets import QGraphicsEllipseItem
 
 from gui.models.port_model import PortModel
@@ -13,7 +13,7 @@ class PortWidget(QGraphicsEllipseItem):
         self.port = port
         self.edge_id = port.edge_id
 
-    def get_center(self):
+    def get_center(self) -> QPointF:
         return self.scenePos() + self.boundingRect().center()
 
     def mousePressEvent(self, event, /):

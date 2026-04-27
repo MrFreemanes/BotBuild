@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QGraphicsScene, QPushButton, QVBoxLayout, QHBoxLayout, QWidget
 
-from config.action_config import ActionType
 from gui.base_window import BaseWindow
 from gui.models.graph_model import GraphModel
 from gui.widgets.graph_view import GraphView
@@ -37,15 +36,6 @@ class MainWindow(BaseWindow):
 
         save_btn.clicked.connect(self.save)
         load_btn.clicked.connect(self.load)
-        self.init_nodes()
-
-    def init_nodes(self):
-        self.model.add_node(ActionType.CLICK, (100, 100))
-        self.model.add_node(ActionType.CLICK, (120, 120))
-        self.model.add_node(ActionType.CLICK, (130, 130))
-        self.model.add_node(ActionType.WAIT, (150, 150))
-        self.model.add_node(ActionType.IF, (110, 110))
-        self.model.add_node(ActionType.SEARCH_FOR_IF, (110, 110))
 
     def connect_widget(self) -> None:
         """Подключение виджетов к функциям."""

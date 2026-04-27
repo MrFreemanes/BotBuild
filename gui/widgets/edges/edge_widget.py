@@ -20,7 +20,7 @@ class EdgeWidget(QGraphicsPathItem):
 
         self.update_path()
 
-    def update_path(self):
+    def update_path(self) -> None:
         p1 = self.from_port.get_center()
         p2 = self.to_port.get_center()
 

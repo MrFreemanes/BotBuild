@@ -13,6 +13,10 @@ from gui.widgets.potrs.port_widget import PortWidget
 
 
 class GraphView(QGraphicsView):
+    """
+    Класс GraphicsView отвечающий за отображение нод и связей из класса GraphModel.
+    """
+
     def __init__(self, scene: QGraphicsScene, model: GraphModel):
         super().__init__(scene)
         self.setDragMode(QGraphicsView.ScrollHandDrag)
@@ -35,29 +39,49 @@ class GraphView(QGraphicsView):
         self.model.edge_delete.connect(self.edge_widget_delete)
 
     @Slot(NodeModel)
-    def node_widget_add(self, node: NodeModel):
+    def node_widget_add(self, node: NodeModel) -> None:
+        """
+        Добавляет на граф виджет ноды.
+        :param node: NodeModel из GraphModel.
+        """
         node_widget = NodeWidget(self.model, node, self.interaction_handler)
         self.node_widgets[node.id] = node_widget
         self.scene.addItem(node_widget)
 
     @Slot(NodeModel)
-    def node_widget_update_pos(self, node: NodeModel):
+    def node_widget_update_pos(self, node: NodeModel) -> None:
+        """
+        Обновляет позицию виджета ноды на графе.
+        :param node: NodeModel из GraphModel.
+        """
         node_widget = self.node_widgets[node.id]
         node_widget.setPos(*node.get_pos())
 
     @Slot(NodeModel)
-    def node_widget_update_params(self, node: NodeModel):
+    def node_widget_update_params(self, node: NodeModel) -> None:
+        """
+        Обновляет параметры QWidget на виджете ноды.
+        :param node: NodeModel из GraphModel.
+        """
         node_widget = self.node_widgets[node.id]
         node_widget.widget.set_params(node.get_params())
 
     @Slot(NodeModel)
-    def node_widget_delete(self, node: NodeModel):
+    def node_widget_delete(self, node: NodeModel) -> None:
+        """
+        Удаляет виджет ноды с графа.
+        :param node: NodeModel из GraphModel.
+        """
         node_widget = self.node_widgets[node.id]
         self.scene.removeItem(node_widget)
         del self.node_widgets[node.id]
 
     @Slot(EdgeModel)
-    def edge_widget_add(self, edge: EdgeModel):
+    def edge_widget_add(self, edge: EdgeModel) -> None:
+        """
+        Соединяет 2 порта у виджетов ноды.
+        :param edge: EdgeModel из GraphModel.
+        """
         widget_1 = self.node_widgets[edge.from_node_id]
         widget_2 = self.node_widgets[edge.to_node_id]
         port_1 = widget_1.output_ports_widget[edge.from_port_name]
@@ -67,7 +91,11 @@ class GraphView(QGraphicsView):
         self.scene.addItem(edge_widget)
 
     @Slot(NodeModel)
-    def edge_widget_update_pos(self, node: NodeModel):
+    def edge_widget_update_pos(self, node: NodeModel) -> None:
+        """
+        Обновляет путь связанный с виджетом ноды.
+        :param node: NodeModel из GraphModel.
+        """
         node_widget = self.node_widgets[node.id]
         for port in node_widget.output_ports_widget.values():
             if port.edge_id is not None:
@@ -77,19 +105,32 @@ class GraphView(QGraphicsView):
                 self.edge_widgets[port.edge_id].update_path()
 
     @Slot(EdgeModel)
-    def edge_widget_delete(self, edge: EdgeModel):
+    def edge_widget_delete(self, edge: EdgeModel) -> None:
+        """
+        Удаляет путь.
+        :param edge: EdgeModel из GraphModel.
+        """
         edge_widget = self.edge_widgets[edge.id]
         edge_widget.to_port.edge_id = None
         edge_widget.from_port.edge_id = None
         del self.edge_widgets[edge.id]
         self.scene.removeItem(edge_widget)
 
-    def temp_edge_create(self, port_widget: PortWidget):
+    def temp_edge_create(self, port_widget: PortWidget) -> EdgeTemporaryWidget:
+        """
+        Создает и добавляет на граф временный путь.
+        :param port_widget: PortWidget под курсором при нажатии.
+        :return: EdgeTemporaryWidget - класс на время передвижения мыши с зажатой лкм.
+        """
         temp_edge = EdgeTemporaryWidget(port_widget)
         self.scene.addItem(temp_edge)
         return temp_edge
 
-    def temp_edge_delete(self, temp_edge: EdgeTemporaryWidget):
+    def temp_edge_delete(self, temp_edge: EdgeTemporaryWidget) -> None:
+        """
+        Удаляет временный путь.
+        :param temp_edge: EdgeTemporaryWidget - класс на время передвижения мыши с зажатой лкм.
+        """
         self.scene.removeItem(temp_edge)
 
     def mouseMoveEvent(self, event, /):
@@ -108,14 +149,17 @@ class GraphView(QGraphicsView):
         event.accept()
 
     def dropEvent(self, event, /):
-        self.interaction_handler.drop_event_view(event, self)
+        self.interaction_handler.view_drop_event(event, self)
 
-    def clear_scene(self):
+    def clear_scene(self) -> None:
+        """
+        Отчищает граф от нод и связей.
+        """
         self.node_widgets.clear()
         self.edge_widgets.clear()
         self.scene.clear()
 
-    def wheelEvent(self, event):
+    def wheelEvent(self, event) -> None:
         zoom_in = 1.2
         zoom_out = 1 / zoom_in
 

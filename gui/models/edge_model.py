@@ -6,6 +6,10 @@ from gui.models.port_model import PortModel
 
 
 class EdgeModel(QObject):
+    """
+    Класс-модель соединяющий 2 порта. Имеет 2 модели порта, их имена и id нод с которыми они связаны.
+    """
+
     def __init__(self, from_port: PortModel, to_port: PortModel, edge_id: str = None):
         super().__init__()
 

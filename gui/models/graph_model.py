@@ -12,6 +12,9 @@ from logs.logger_cfg import cfg
 
 
 class GraphModel(QObject):
+    """
+    Класс-модель отвечающий за хранение данных о связях/нодах для их сохранения/восстановления.
+    """
     node_added = Signal(object)
     node_update_pos = Signal(object)
     node_update_params = Signal(object)
@@ -30,6 +33,11 @@ class GraphModel(QObject):
         self.edges: dict[str, EdgeModel] = {}
 
     def add_edge(self, port_1: PortModel, port_2: PortModel) -> None:
+        """
+        Отвечает за создание связи, ее сохранение, отправку сигнала о создании в edge_added.
+        :param port_1: PortModel для соединения с другим.
+        :param port_2: PortModel
+        """
         if port_1.direction == port_2.direction:
             return
         if port_1.node_id == port_2.node_id:
@@ -46,6 +54,10 @@ class GraphModel(QObject):
         self.edge_added.emit(edge)
 
     def delete_edge(self, edge_id: str) -> None:
+        """
+        Отвечает за удаление связи и отправку сигнала об этом в edge_delete.
+        :param edge_id: id связи.
+        """
         edge = self.edges[edge_id]
         del self.edges[edge_id]
         edge.from_port.free()
@@ -56,6 +68,11 @@ class GraphModel(QObject):
         self.edge_delete.emit(edge)
 
     def add_node(self, action_type: ActionType, pos: tuple) -> None:
+        """
+        Отвечает за создание ноды, ее сохранение, отправку сигнала о создании в node_added.
+        :param action_type: Тип действия.
+        :param pos: Координаты на view.
+        """
         node = NodeModel(action_type, pos)
         self.nodes[node.id] = node
         self.logger.info('Add node, action_type: %s', action_type)
@@ -63,6 +80,12 @@ class GraphModel(QObject):
         self.node_added.emit(node)
 
     def set_node_pos(self, node_id: str, pos: tuple) -> None:
+        """
+        Отвечает за обновление позиции ноды и отправку сигнала об изменении в
+        node_update_pos и edge_update_pos для передвижения связей.
+        :param node_id: id ноды.
+        :param pos: Координаты на view.
+        """
         node = self.nodes[node_id]
         node.set_pos(pos)
 
@@ -70,6 +93,13 @@ class GraphModel(QObject):
         self.edge_update_pos.emit(node)
 
     def set_node_params(self, node_id: str, key: str, value: str | int) -> None:
+        """
+        Отвечает за обновление параметров ноды и отправку сигнала для синхронизации данных в node_update_params.
+        :param node_id:
+        :param key:
+        :param value:
+        :return:
+        """
         node = self.nodes[node_id]
         params = node.get_params()
         params[key] = value
@@ -79,6 +109,11 @@ class GraphModel(QObject):
         self.node_update_params.emit(node)
 
     def delete_node(self, node_id: str) -> None:
+        """
+        Отвечает за удаление ноды и отправку сигнала об этом в node_delete.
+        :param node_id:
+        :return:
+        """
         node = self.nodes[node_id]
         for edge_id, edge in list(self.edges.items()):
             if edge.is_there_connection(node_id):
@@ -101,6 +136,11 @@ class GraphModel(QObject):
         return data
 
     def load_from_dict(self, data: dict) -> None:
+        """
+        Создает модели ноды, отправляет сигнал о создании в node_added.
+        Создает модели связи, отправляет сигнал о создании в edge_added.
+        :param data: словарь загруженный из файла bot.json/
+        """
         self.logger.info('Model load from dict')
         self.nodes.clear()
         self.edges.clear()

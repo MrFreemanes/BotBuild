@@ -5,10 +5,10 @@ from config.action_config import ClickType
 
 
 class ClickActionWidget(BaseActionWidget):
-    def set_up(self):
+    def set_up(self) -> None:
         self._add_combo_box_click_type()
 
-    def _add_combo_box_click_type(self):
+    def _add_combo_box_click_type(self) -> None:
         self.combo_box = QComboBox()
         self.combo_box.addItem(ClickType.LEFT.value)
         self.combo_box.addItem(ClickType.RIGHT.value)
@@ -22,5 +22,5 @@ class ClickActionWidget(BaseActionWidget):
 
         self.combo_box.currentTextChanged.connect(self._changed_combo_box_click_type)
 
-    def _changed_combo_box_click_type(self, click_type):
+    def _changed_combo_box_click_type(self, click_type) -> None:
         self.model.set_node_params(self.node.id, 'ClickType', click_type)

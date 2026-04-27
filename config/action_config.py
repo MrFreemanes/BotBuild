@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class ActionType(Enum):
+    """
+    Типы действий. Используются в ui и core.
+    """
     CLICK = "Click"
     WAIT = "Wait"
     IF = "If"
@@ -16,4 +19,4 @@ class ClickType(Enum):
     MIDDLE = "Middle"
 
 
-ACTIONS_SUITABLE_FOR_IF = [ActionType.SEARCH_FOR_IF]
+ACTIONS_SUITABLE_FOR_IF = [ActionType.SEARCH_FOR_IF]  # Действия к которым подключается первый порт if/

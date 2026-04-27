@@ -5,6 +5,10 @@ from config.widget_config import DirectionType
 
 
 class PortModel(QObject):
+    """
+    Класс-модель порта. Имеет тип ноды, ее id, свое имя, направление(выход/вход), id edge с которым связана.
+    """
+
     def __init__(self, node_id: str, action_type: ActionType, name: str, direction: DirectionType):
         super().__init__()
 

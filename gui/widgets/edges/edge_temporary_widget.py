@@ -11,11 +11,11 @@ class EdgeTemporaryWidget(QGraphicsPathItem):
         self.drag_port = drag_port
         self.temp_pos = None
 
-    def set_temp_pos(self, pos):
+    def set_temp_pos(self, pos) -> None:
         self.temp_pos = pos
         self.update_path()
 
-    def update_path(self):
+    def update_path(self) -> None:
         p1 = self.drag_port.get_center()
         p2 = self.temp_pos
 

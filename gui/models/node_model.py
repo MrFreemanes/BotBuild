@@ -12,6 +12,12 @@ from config.action_config import ActionType
 
 
 class NodeModel(QObject):
+    """
+    Класс-модель ноды. Имеет тип, id, позицию на view, параметры для виджета на ней.
+    Автоматически меняет размер в соответствии с виджетом.
+    Создает модели портов указанные в NODE_REGISTRY.
+    """
+
     def __init__(self, action_type: ActionType, pos: tuple, node_id: str = None):
         super().__init__()
 
@@ -24,9 +30,9 @@ class NodeModel(QObject):
         self._params = NODE_REGISTRY[self.action_type]['base_params'].copy()
 
         self.inputs = {name: PortModel(self.id, self.action_type, name, DirectionType.INPUT) for name in
-                       NODE_REGISTRY[self.action_type]['ports']['inputs']}
+                       NODE_REGISTRY[self.action_type]['ports'][DirectionType.INPUT]}
         self.outputs = {name: PortModel(self.id, self.action_type, name, DirectionType.OUTPUT) for name in
-                        NODE_REGISTRY[self.action_type]['ports']['outputs']}
+                        NODE_REGISTRY[self.action_type]['ports'][DirectionType.OUTPUT]}
 
         self.logger.debug('NodeModel created, id: %s, action_type: %s, pos: %s, params %s',
                           self.id, self.action_type, self._pos, self._params)
