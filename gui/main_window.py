@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QGraphicsScene, QPushButton, QVBoxLayout, QHBoxLayout, QWidget
 
 from gui.base_window import BaseWindow
+from utils.graph_compiler import GraphCompiler
 from gui.models.graph_model import GraphModel
 from gui.widgets.graph_view import GraphView
 from gui.widgets.sidebar.sidebar_widget import Sidebar
@@ -16,13 +17,16 @@ class MainWindow(BaseWindow):
         self.scene.setSceneRect(-2000, -2000, 4000, 4000)
         self.model = GraphModel()
         self.view = GraphView(self.scene, self.model)
+        self.graph_compiler = GraphCompiler(self.model)
 
+        run_btn = QPushButton('Run')
         save_btn = QPushButton('Save')
         load_btn = QPushButton('load')
         sidebar = Sidebar()
 
         layout_btn = QVBoxLayout()
         layout_btn.addWidget(sidebar)
+        layout_btn.addWidget(run_btn)
         layout_btn.addWidget(save_btn)
         layout_btn.addWidget(load_btn)
 
@@ -34,15 +38,21 @@ class MainWindow(BaseWindow):
         widget.setLayout(layout)
         self.setCentralWidget(widget)
 
+        run_btn.clicked.connect(self._run)
         save_btn.clicked.connect(self.save)
         load_btn.clicked.connect(self.load)
+        self.graph_compiler.validate_signal.connect(self._dialog_error)
 
     def connect_widget(self) -> None:
         """Подключение виджетов к функциям."""
         pass
 
     def _run(self) -> None:
-        pass
+        chain = self.graph_compiler.compile()
+        if chain is not None:
+            self.run_task('run_bot', chain)
+        else:
+            self.logger.warning('chain пуст')
 
     def _finally_run(self) -> None:
         pass

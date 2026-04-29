@@ -2,11 +2,12 @@ from PIL import ImageGrab
 import cv2
 import numpy as np
 
+from core.actions.base_action import Action
 from core.actions.halpers.context import Context
 
 
-class ImageFound:
-    def __init__(self, template_path, threshold=0.8):
+class ImageSearchAction(Action):
+    def __init__(self, template_path: str, threshold=0.8):
         self.template = cv2.imread(template_path, cv2.IMREAD_GRAYSCALE)
         self.w, self.h = self.template.shape[::-1]
         self.threshold = threshold

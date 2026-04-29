@@ -13,7 +13,7 @@ class ClickActionWidget(BaseActionWidget):
         self.combo_box.addItem(ClickType.LEFT.value)
         self.combo_box.addItem(ClickType.RIGHT.value)
         self.combo_box.addItem(ClickType.MIDDLE.value)
-        self.combo_box.setCurrentText(self._params['ClickType'])
+        self.combo_box.setCurrentText(self._params['click_type'])
 
         layout = QHBoxLayout()
         layout.addWidget(QLabel('Тип клика:'))
@@ -23,4 +23,4 @@ class ClickActionWidget(BaseActionWidget):
         self.combo_box.currentTextChanged.connect(self._changed_combo_box_click_type)
 
     def _changed_combo_box_click_type(self, click_type) -> None:
-        self.model.set_node_params(self.node.id, 'ClickType', click_type)
+        self.model.set_node_params(self.node.id, 'click_type', click_type)

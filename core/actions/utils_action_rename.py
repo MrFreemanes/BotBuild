@@ -4,15 +4,15 @@ from core.actions.base_action import Action
 from core.actions.halpers.context import Context
 
 
-class Wait(Action):
-    def __init__(self, time_sleep: int | float):
-        self.time_sleep = time_sleep
+class WaitAction(Action):
+    def __init__(self, waiting_time: int | float):
+        self.waiting_time = waiting_time
 
     def run(self, context: Context):
-        time.sleep(self.time_sleep)
+        time.sleep(self.waiting_time)
 
 
-class WaitUntil(Action):
+class WaitUntilAction(Action):
     def __init__(self, condition, timeout=None):
         self.condition = condition
         self.timeout = timeout
@@ -28,7 +28,7 @@ class WaitUntil(Action):
                 return
 
 
-class Loop(Action):
+class LoopAction(Action):
     def __init__(self, actions: list, count=None):
         self.actions = actions
         self.count = count

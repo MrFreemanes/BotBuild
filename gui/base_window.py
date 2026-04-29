@@ -110,6 +110,6 @@ class BaseWindow(QMainWindow):
         :param message: Сообщение, которое будет показано пользователю.
         """
         QApplication.beep()
-        self.logger.error('Получен сигнал об ошибке от Bridge: %s', message)
+        self.logger.error('Получен сигнал об ошибке: %s', message)
         dialog = ErrorDialog(message)
         dialog.exec()  # модальное окно

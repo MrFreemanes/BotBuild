@@ -9,7 +9,7 @@ outputs = DirectionType.OUTPUT
 NODE_REGISTRY = {
     ActionType.CLICK: {
         'base_params': {
-            'ClickType': ClickType.LEFT.value
+            'click_type': ClickType.LEFT.value
         },
         'ports': {
             inputs: ['input'],
@@ -29,11 +29,13 @@ NODE_REGISTRY = {
         'base_params': {},
         'ports': {
             inputs: ['input'],
-            outputs: ['action', 'true', 'false']
+            outputs: ['action', 'actions_true', 'actions_false']
         }
     },
     ActionType.SEARCH_FOR_IF: {
-        'base_params': {},
+        'base_params': {
+            'template_path': None
+        },
         'ports': {
             inputs: ['if'],
             outputs: []

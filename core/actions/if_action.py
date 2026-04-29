@@ -2,24 +2,24 @@ from core.actions.base_action import Action
 from core.actions.halpers.context import Context
 
 
-class If(Action):
-    def __init__(self, condition, action_true: list, action_false: list | None = None):
-        self.condition = condition
-        self.action_true = action_true
-        self.action_false = action_false
+class IfAction(Action):
+    def __init__(self, action, actions_true: list, actions_false: list):
+        self.action = action
+        self.actions_true = actions_true
+        self.actions_false = actions_false
 
     def run(self, context: Context) -> None:
-        if self.condition.run(context):
-            for a in self.action_true:
+        if self.action.run(context):
+            for a in self.actions_true:
                 if not context.running:
                     break
                 a.run(context)
         else:
-            if self.action_false is None:
+            if self.actions_false:
                 context.running = False
                 return
 
-            for a in self.action_false:
+            for a in self.actions_false:
                 if not context.running:
                     break
                 a.run(context)
