@@ -15,7 +15,8 @@ class BaseActionWidget(QWidget):
     """
     Базовый класс виджетов на нодах.
     """
-    def __init__(self, model: GraphModel, node: NodeModel):
+
+    def __init__(self, model: GraphModel, node: NodeModel, node_widget):
         super().__init__()
 
         logging.config.dictConfig(cfg)
@@ -23,6 +24,7 @@ class BaseActionWidget(QWidget):
 
         self.model = model
         self.node = node
+        self.node_widget = node_widget
         self._params = self.node.get_params()
 
         self.layout = QVBoxLayout()

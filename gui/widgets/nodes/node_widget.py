@@ -25,23 +25,15 @@ class NodeWidget(QGraphicsRectItem):
         self.proxy = QGraphicsProxyWidget(self)
         self.proxy.setWidget(self.widget)
 
-        # Размер Node
-        w, h = self.widget.get_geometry()
-        self.setRect(0, 0, w + 4, h + 4)
-
-        # Позиция виджета
-        rect = self.rect()
-        p_x = (rect.width() - w) / 2
-        p_y = (rect.height() - h) / 2
-        self.proxy.setPos(p_x, p_y)
-
+        self.update_size()
         # Порты
         self.input_ports_widget, self.output_ports_widget = self.create_ports()
 
     def create_widget(self) -> BaseActionWidget:
         return WIDGET_REGISTRY[self.node.action_type](
             self.model,
-            self.node
+            self.node,
+            node_widget=self
         )
 
     def create_ports(self) -> tuple[dict[str, PortWidget], dict[str, PortWidget]]:
@@ -64,6 +56,16 @@ class NodeWidget(QGraphicsRectItem):
                 patent=self
             ))
         return in_ports, out_ports
+
+    def update_size(self):
+        # Размер Node
+        w, h = self.widget.get_geometry()
+        self.setRect(0, 0, w + 4, h + 4)
+
+        rect = self.rect()
+        p_x = (rect.width() - w) / 2
+        p_y = (rect.height() - h) / 2
+        self.proxy.setPos(p_x, p_y)
 
     def mousePressEvent(self, event, /):
         self.interaction_handler.node_mouse_press(event, self)

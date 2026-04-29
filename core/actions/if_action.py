@@ -3,8 +3,8 @@ from core.actions.halpers.context import Context
 
 
 class IfAction(Action):
-    def __init__(self, action, actions_true: list, actions_false: list):
-        self.action = action
+    def __init__(self, action: list, actions_true: list, actions_false: list):
+        self.action = action[0]
         self.actions_true = actions_true
         self.actions_false = actions_false
 

@@ -6,7 +6,7 @@ from core.actions.halpers.mouse_click import click
 
 class ClickAction(Action):
     def __init__(self,
-                 coordinates: tuple | None = (123, 123),
+                 coordinates: tuple | None = None,
                  click_type: ClickType = ClickType.LEFT,
                  clicks: int = 1):
         self.coordinates = coordinates
