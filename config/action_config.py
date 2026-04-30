@@ -8,9 +8,9 @@ class ActionType(Enum):
     CLICK = "Click"
     WAIT = "Wait"
     IF = "If"
-    LOOP = "Loop"
     SEARCH_FOR_IF = "Search for if"
-    SEARCH = "Search"
+    WAIT_UNTIL = "Wait Until"
+    SEARCH_FOR_WAIT_UNTIL = "Search for wait until"
 
 
 class ClickType(Enum):
@@ -19,4 +19,11 @@ class ClickType(Enum):
     MIDDLE = "Middle"
 
 
-ACTIONS_SUITABLE_FOR_IF = [ActionType.SEARCH_FOR_IF]  # Действия к которым подключается первый порт if/
+# Действия к которым подключается первый порт If
+ACTIONS_SUITABLE_FOR_IF = [
+    ActionType.SEARCH_FOR_IF
+]
+# Действия к которым подключается первый порт Wait until
+ACTIONS_SUITABLE_FOR_WAIT_UNTIL = [
+    ActionType.SEARCH_FOR_WAIT_UNTIL
+]

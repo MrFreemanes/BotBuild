@@ -1,4 +1,4 @@
-from config.action_config import ActionType, ACTIONS_SUITABLE_FOR_IF
+from config.action_config import ActionType, ACTIONS_SUITABLE_FOR_IF, ACTIONS_SUITABLE_FOR_WAIT_UNTIL
 from config.node_registry import NODE_REGISTRY
 from config.widget_config import DirectionType
 from gui.models.graph_model import GraphModel
@@ -68,12 +68,24 @@ class ConnectionController:
         from_port = p1 if p1.direction == DirectionType.OUTPUT else p2
         to_port = p2 if p2.direction == DirectionType.INPUT else p1
 
+        # If
         if to_port.action_type in ACTIONS_SUITABLE_FOR_IF:
             if from_port.name != NODE_REGISTRY[ActionType.IF]['ports'][DirectionType.OUTPUT][0]:
                 return False
 
-        if from_port.name == NODE_REGISTRY[ActionType.IF]['ports'][DirectionType.OUTPUT][0]:
+        if (from_port.action_type == ActionType.IF and
+                from_port.name == NODE_REGISTRY[ActionType.IF]['ports'][DirectionType.OUTPUT][0]):
             if to_port.action_type not in ACTIONS_SUITABLE_FOR_IF:
+                return False
+
+        # Wait until
+        if to_port.action_type in ACTIONS_SUITABLE_FOR_WAIT_UNTIL:
+            if from_port.name != NODE_REGISTRY[ActionType.WAIT_UNTIL]['ports'][DirectionType.OUTPUT][0]:
+                return False
+
+        if (from_port.action_type == ActionType.WAIT_UNTIL and
+                from_port.name == NODE_REGISTRY[ActionType.WAIT_UNTIL]['ports'][DirectionType.OUTPUT][0]):
+            if to_port.action_type not in ACTIONS_SUITABLE_FOR_WAIT_UNTIL:
                 return False
 
         return True

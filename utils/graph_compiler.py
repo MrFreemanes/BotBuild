@@ -76,6 +76,11 @@ class GraphCompiler(QObject):
                     self.validate_signal.emit(f'Есть не подключенные порты у {ActionType.IF.value}')
                     return False
                 return True
+            case ActionType.WAIT_UNTIL:
+                if node.outputs['action'].edge_id is None or node.outputs['actions_true'].edge_id is None:
+                    self.validate_signal.emit(f'Есть не подключенные порты у {ActionType.WAIT_UNTIL.value}')
+                    return False
+                return True
             case _:
                 self.validate_signal.emit(f'Неизвестная нода {node.action_type.value}')
                 return False

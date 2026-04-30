@@ -40,5 +40,23 @@ NODE_REGISTRY = {
             inputs: ['if'],
             outputs: []
         }
-    }
+    },
+    ActionType.WAIT_UNTIL: {
+        'base_params': {
+            'timeout': 0,
+        },
+        'ports': {
+            inputs: ['input'],
+            outputs: ['action', 'actions_true', 'actions_false']
+        }
+    },
+    ActionType.SEARCH_FOR_WAIT_UNTIL: {
+        'base_params': {
+            'template_path': None
+        },
+        'ports': {
+            inputs: ['wait_until'],
+            outputs: []
+        }
+    },
 }

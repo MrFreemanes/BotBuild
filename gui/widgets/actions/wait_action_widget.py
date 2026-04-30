@@ -15,7 +15,7 @@ class WaitActionWidget(BaseActionWidget):
         layout.addWidget(self.spin_box)
         self.layout.addLayout(layout)
 
-        self.spin_box.valueChanged.connect(self._changed__spin_box_waiting_time)
+        self.spin_box.valueChanged.connect(self._changed_spin_box_waiting_time)
 
-    def _changed__spin_box_waiting_time(self, waiting_time) -> None:
+    def _changed_spin_box_waiting_time(self, waiting_time) -> None:
         self.model.set_node_params(self.node.id, 'waiting_time', waiting_time)

@@ -11,6 +11,7 @@ class Sidebar(QTreeWidget):
 
         self.setHeaderHidden(True)
         self.setDragEnabled(True)
+        self.setMinimumWidth(170)
 
         self.build_tree()
 
@@ -18,6 +19,7 @@ class Sidebar(QTreeWidget):
         actions = QTreeWidgetItem(['Actions'])
         self.addTopLevelItem(actions)
 
+        # Normal action
         click = QTreeWidgetItem(['Click'])
         click.setData(0, Qt.UserRole, ActionType.CLICK)
         actions.addChild(click)
@@ -30,12 +32,25 @@ class Sidebar(QTreeWidget):
         if_action.setData(0, Qt.UserRole, ActionType.IF)
         actions.addChild(if_action)
 
+        wait_until_action = QTreeWidgetItem(['Wait until'])
+        wait_until_action.setData(0, Qt.UserRole, ActionType.WAIT_UNTIL)
+        actions.addChild(wait_until_action)
+
+        # If actions
         if_actions = QTreeWidgetItem(['If actions'])
         self.addTopLevelItem(if_actions)
 
         if_search = QTreeWidgetItem(['If search'])
         if_search.setData(0, Qt.UserRole, ActionType.SEARCH_FOR_IF)
         if_actions.addChild(if_search)
+
+        # Wait until actions
+        wait_until_actions = QTreeWidgetItem(['Wait until actions'])
+        self.addTopLevelItem(wait_until_actions)
+
+        wait_until_search = QTreeWidgetItem(['Wait until search'])
+        wait_until_search.setData(0, Qt.UserRole, ActionType.SEARCH_FOR_WAIT_UNTIL)
+        wait_until_actions.addChild(wait_until_search)
 
         self.expandAll()
 

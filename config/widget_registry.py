@@ -7,6 +7,10 @@ WIDGET_REGISTRY - ActionWidget из gui.widgets.actions для создания 
 WIDGET_REGISTRY = {
     ActionType.CLICK: ClickActionWidget,
     ActionType.WAIT: WaitActionWidget,
+
     ActionType.IF: IfActionWidget,
-    ActionType.SEARCH_FOR_IF: SearchForIfActionWidget
+    ActionType.SEARCH_FOR_IF: SearchForIfActionWidget,
+
+    ActionType.WAIT_UNTIL: WaitUntilActionWidget,
+    ActionType.SEARCH_FOR_WAIT_UNTIL: SearchForWaitUntilActionWidget
 }
