@@ -9,6 +9,7 @@ outputs = DirectionType.OUTPUT
 NODE_REGISTRY = {
     ActionType.CLICK: {
         'base_params': {
+            'clicks': 1,
             'click_type': ClickType.LEFT.value
         },
         'ports': {

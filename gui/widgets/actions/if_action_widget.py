@@ -10,7 +10,7 @@ class IfActionWidget(BaseActionWidget):
 
     def _add_label(self) -> None:
         layout = QVBoxLayout()
-        layout.addWidget(QLabel('Действие:\n', alignment=(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)))
+        layout.addWidget(QLabel('Action:\n', alignment=(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)))
         layout.addWidget(QLabel('True:\n', alignment=(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)))
         layout.addWidget(QLabel('False:\n\n', alignment=(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)))
         self.layout.addLayout(layout)
