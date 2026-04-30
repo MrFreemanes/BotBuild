@@ -7,9 +7,10 @@ class Worker(BaseWorker):
     @BaseWorker.register_task('run_bot')
     def run_bot(self) -> None:
         context = Context()
-        for params in self.item.params:
+        for action in self.item.params:
+            print(action.__class__)
             if not context.running:
                 self.send_result((), status=Status.ERROR, text_error='Бот завершился раньше')
                 break
-            params.run(context)
+            action.run(context)
         self.send_result((), status=Status.DONE)

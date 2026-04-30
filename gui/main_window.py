@@ -14,7 +14,7 @@ class MainWindow(BaseWindow):
         self.setWindowTitle('BotBuild')
 
         self.scene = QGraphicsScene()
-        self.scene.setSceneRect(-2000, -2000, 4000, 4000)
+        self.scene.setSceneRect(-4000, -4000, 8000, 8000)
         self.model = GraphModel()
         self.view = GraphView(self.scene, self.model)
         self.graph_compiler = GraphCompiler(self.model)
