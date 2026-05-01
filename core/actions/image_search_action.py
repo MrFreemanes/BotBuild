@@ -2,11 +2,11 @@ from PIL import ImageGrab
 import cv2
 import numpy as np
 
-from core.actions.base_action import Action
+from core.actions.base_action import BaseAction
 from core.actions.halpers.context import Context
 
 
-class ImageSearchAction(Action):
+class ImageSearchAction(BaseAction):
     def __init__(self, template_path: str, threshold=0.8):
         """
         :param template_path: Путь до изображения которое будет искаться.

@@ -1,8 +1,8 @@
-from core.actions.base_action import Action
+from core.actions.base_action import BaseAction
 from core.actions.halpers.context import Context
 
 
-class IfAction(Action):
+class IfAction(BaseAction):
     def __init__(self, action: list, actions_true: list, actions_false: list):
         """
         :param action: [Action] возвращающий bool например ImageSearchAction.

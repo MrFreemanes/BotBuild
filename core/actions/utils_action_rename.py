@@ -1,10 +1,10 @@
 import time
 
-from core.actions.base_action import Action
+from core.actions.base_action import BaseAction
 from core.actions.halpers.context import Context
 
 
-class WaitAction(Action):
+class WaitAction(BaseAction):
     def __init__(self, waiting_time: int | float):
         """
         :param waiting_time: Время остановки.
@@ -15,7 +15,7 @@ class WaitAction(Action):
         time.sleep(self.waiting_time)
 
 
-class WaitUntilAction(Action):
+class WaitUntilAction(BaseAction):
     def __init__(self, action: list, actions_true: list, actions_false: list, timeout=0):
         """
         :param action: [Action] возвращающий bool например ImageSearchAction.
@@ -57,7 +57,7 @@ class WaitUntilAction(Action):
                 break
 
 
-class LoopAction(Action):
+class LoopAction(BaseAction):
     def __init__(self, actions: list, count=None):
         """
         :param actions: [Action, ...].

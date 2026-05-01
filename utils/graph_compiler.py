@@ -2,7 +2,7 @@ from PySide6.QtCore import Signal, QObject
 
 from config.action_config import ActionType
 from config.action_registry import ACTION_REGISTRY
-from core.actions.base_action import Action
+from core.actions.base_action import BaseAction
 from gui.models.edge_model import EdgeModel
 from gui.models.graph_model import GraphModel
 from gui.models.node_model import NodeModel
@@ -34,7 +34,7 @@ class GraphCompiler(QObject):
 
         return chain
 
-    def _build(self, node: NodeModel | None) -> list[Action]:
+    def _build(self, node: NodeModel | None) -> list[BaseAction]:
         if node is None or node.id in self.visited:
             return []
         self.visited.append(node.id)

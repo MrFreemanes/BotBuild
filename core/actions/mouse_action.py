@@ -1,10 +1,10 @@
 from config.action_config import ClickType
-from core.actions.base_action import Action
+from core.actions.base_action import BaseAction
 from core.actions.halpers.context import Context
 from core.actions.halpers.mouse_click import click
 
 
-class ClickAction(Action):
+class ClickAction(BaseAction):
     def __init__(self,
                  coordinates: tuple | None = None,
                  click_type: ClickType = ClickType.LEFT,
