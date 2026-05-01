@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QGraphicsScene, QPushButton, QVBoxLayout, QHBoxLayout, QWidget
 
+from config.config import Result
 from gui.base_window import BaseWindow
 from utils.graph_compiler import GraphCompiler
 from gui.models.graph_model import GraphModel
@@ -48,16 +49,22 @@ class MainWindow(BaseWindow):
     def _run(self) -> None:
         chain = self.graph_compiler.compile()
         if chain is not None:
-            self.run_task('run_bot', chain)
+            self.run_task('run_bot',
+                          chain,
+                          progress_handler=self._set_working_node_id,
+                          finally_handler=self._finally_run)
         else:
             self.logger.warning('chain пуст')
 
-    def _finally_run(self) -> None:
-        pass
+    def _set_working_node_id(self, result: Result) -> None:
+        self.view.set_working_node(result.result)
 
-    def save(self):
+    def _finally_run(self) -> None:
+        self.view.set_working_node(None)
+
+    def save(self) -> None:
         save_bot_json('Test.json', self.model.to_dict())
 
-    def load(self):
+    def load(self) -> None:
         self.view.clear_scene()
         self.model.load_from_dict(load_bot_json('Test.json'))

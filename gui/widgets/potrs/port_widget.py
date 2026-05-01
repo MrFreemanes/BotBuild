@@ -1,4 +1,5 @@
 from PySide6.QtCore import Qt, QPointF
+from PySide6.QtGui import QBrush, QColor
 from PySide6.QtWidgets import QGraphicsEllipseItem
 
 from gui.models.port_model import PortModel
@@ -19,3 +20,9 @@ class PortWidget(QGraphicsEllipseItem):
     def mousePressEvent(self, event, /):
         view = self.scene().views()[0]
         view.interaction_handler.port_mouse_press(event, self)
+
+    def work(self):
+        self.setBrush(QBrush(QColor(0, 107, 60)))
+
+    def rest(self):
+        self.setBrush(Qt.blue)

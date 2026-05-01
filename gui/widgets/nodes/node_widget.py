@@ -1,3 +1,4 @@
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush, QColor
 from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsProxyWidget
 
@@ -20,7 +21,7 @@ class NodeWidget(QGraphicsRectItem):
         self.node = node
         self.interaction_handler = interaction_handler
         self.setPos(*self.node.get_pos())
-        self.setBrush(QBrush(QColor(50, 100, 200)))
+        self.setBrush(Qt.blue)
         self.setFlag(QGraphicsRectItem.ItemIsMovable)
         self.setFlag(QGraphicsRectItem.ItemIsSelectable)
 
@@ -87,3 +88,17 @@ class NodeWidget(QGraphicsRectItem):
 
     def mouseMoveEvent(self, event, /):
         self.interaction_handler.node_mouse_move(event, self)
+
+    def work(self):
+        self.setBrush(QBrush(QColor(0,107,60)))
+        for in_port in self.input_ports_widget.values():
+            in_port.work()
+        for out_port in self.output_ports_widget.values():
+            out_port.work()
+
+    def rest(self):
+        self.setBrush(Qt.blue)
+        for in_port in self.input_ports_widget.values():
+            in_port.rest()
+        for out_port in self.output_ports_widget.values():
+            out_port.rest()

@@ -7,11 +7,13 @@ from core.actions.halpers.context import Context
 
 
 class ImageSearchAction(BaseAction):
-    def __init__(self, template_path: str, threshold=0.8):
+    def __init__(self, template_path: str, threshold: float | int = 0.8, node_id: str = None):
         """
         :param template_path: Путь до изображения которое будет искаться.
         :param threshold: Коэффициент совпадения.
         """
+        super().__init__(node_id)
+
         self.template = cv2.imread(template_path, cv2.IMREAD_GRAYSCALE)
         self.w, self.h = self.template.shape[::-1]
         self.threshold = threshold

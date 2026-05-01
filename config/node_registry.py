@@ -9,6 +9,7 @@ outputs = DirectionType.OUTPUT
 NODE_REGISTRY = {
     ActionType.CLICK: {
         'base_params': {
+            'node_id': None,
             'clicks': 1,
             'click_type': ClickType.LEFT.value
         },
@@ -19,6 +20,7 @@ NODE_REGISTRY = {
     },
     ActionType.WAIT: {
         'base_params': {
+            'node_id': None,
             'waiting_time': 1
         },
         'ports': {
@@ -27,7 +29,9 @@ NODE_REGISTRY = {
         }
     },
     ActionType.IF: {
-        'base_params': {},
+        'base_params': {
+            'node_id': None,
+        },
         'ports': {
             inputs: ['input'],
             outputs: ['action', 'actions_true', 'actions_false']
@@ -35,6 +39,7 @@ NODE_REGISTRY = {
     },
     ActionType.SEARCH_FOR_IF: {
         'base_params': {
+            'node_id': None,
             'template_path': None
         },
         'ports': {
@@ -44,6 +49,7 @@ NODE_REGISTRY = {
     },
     ActionType.WAIT_UNTIL: {
         'base_params': {
+            'node_id': None,
             'timeout': 0,
         },
         'ports': {
@@ -53,6 +59,7 @@ NODE_REGISTRY = {
     },
     ActionType.SEARCH_FOR_WAIT_UNTIL: {
         'base_params': {
+            'node_id': None,
             'template_path': None
         },
         'ports': {

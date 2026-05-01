@@ -35,6 +35,7 @@ class GraphView(QGraphicsView):
         self.interaction_handler = InteractionHandler(self.model, self.connection_controller)
         self.node_widgets: dict[str, NodeWidget] = {}
         self.edge_widgets: dict[str, EdgeWidget] = {}
+        self.previous_node_id = None
 
         self.model.node_added.connect(self.node_widget_add)
         self.model.node_update_pos.connect(self.node_widget_update_pos)
@@ -87,7 +88,7 @@ class GraphView(QGraphicsView):
         self.scene.removeItem(node_widget)
         del self.node_widgets[node.id]
 
-        self.logger.debug('View. Delete node widget, action_type: s%', node.action_type)
+        self.logger.debug('View. Delete node widget, action_type: %s', node.action_type)
 
     @Slot(EdgeModel)
     def edge_widget_add(self, edge: EdgeModel) -> None:
@@ -103,7 +104,7 @@ class GraphView(QGraphicsView):
         self.edge_widgets[edge.id] = edge_widget
         self.scene.addItem(edge_widget)
 
-        self.logger.debug('View. Add edge widget, from_port: s%, to_port: s%',
+        self.logger.debug('View. Add edge widget, from_port: %s, to_port: %s',
                           edge.from_port_name, edge.to_port_name)
 
     @Slot(NodeModel)
@@ -132,7 +133,7 @@ class GraphView(QGraphicsView):
         del self.edge_widgets[edge.id]
         self.scene.removeItem(edge_widget)
 
-        self.logger.debug('View. Delete edge widget, from_port: s%, to_port: s%',
+        self.logger.debug('View. Delete edge widget, from_port: %s, to_port: %s',
                           edge.from_port_name, edge.to_port_name)
 
     def temp_edge_create(self, port_widget: PortWidget) -> EdgeTemporaryWidget:
@@ -151,6 +152,18 @@ class GraphView(QGraphicsView):
         :param temp_edge: EdgeTemporaryWidget - класс на время передвижения мыши с зажатой лкм.
         """
         self.scene.removeItem(temp_edge)
+
+    def set_working_node(self, present_node_id: str | None) -> None:
+        if self.previous_node_id:
+            previous_node_widget = self.node_widgets.get(self.previous_node_id)
+            if previous_node_widget:
+                previous_node_widget.rest()
+
+        present_node_widget = self.node_widgets.get(present_node_id)
+        if present_node_widget:
+            present_node_widget.work()
+
+        self.previous_node_id = present_node_id
 
     def mouseMoveEvent(self, event, /):
         self.interaction_handler.view_mouse_move(event, self)

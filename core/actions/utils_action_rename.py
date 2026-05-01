@@ -5,18 +5,21 @@ from core.actions.halpers.context import Context
 
 
 class WaitAction(BaseAction):
-    def __init__(self, waiting_time: int | float):
+    def __init__(self, waiting_time: int | float, node_id: str = None):
         """
         :param waiting_time: Время остановки.
         """
+        super().__init__(node_id)
+
         self.waiting_time = waiting_time
 
     def run(self, context: Context) -> None:
+        context.working_node(self.node_id)
         time.sleep(self.waiting_time)
 
 
 class WaitUntilAction(BaseAction):
-    def __init__(self, action: list, actions_true: list, actions_false: list, timeout=0):
+    def __init__(self, action: list, actions_true: list, actions_false: list, timeout: int = 0, node_id: str = None):
         """
         :param action: [Action] возвращающий bool например ImageSearchAction.
         :param actions_true: [Action, ...].
@@ -25,6 +28,8 @@ class WaitUntilAction(BaseAction):
                         выполняется actions_false, если он не пуст.
                         Если timeout = 0, то не учитывается.
         """
+        super().__init__(node_id)
+
         self.action = action[0]
         self.actions_true = actions_true
         self.actions_false = actions_false
@@ -36,7 +41,7 @@ class WaitUntilAction(BaseAction):
         Если время вышло, то вызывает метод run() у объектов из списка actions_false, если они есть.
         """
         start = time.time()
-
+        context.working_node(self.node_id)
         while context.running:
             if self.action.run(context):
                 for a in self.actions_true:
@@ -58,11 +63,13 @@ class WaitUntilAction(BaseAction):
 
 
 class LoopAction(BaseAction):
-    def __init__(self, actions: list, count=None):
+    def __init__(self, actions: list, count=None, node_id: str = None):
         """
         :param actions: [Action, ...].
         :param count: Кол-во выполнений. Если None, то бесконечно.
         """
+        super().__init__(node_id)
+
         self.actions = actions
         self.count = count
 
@@ -71,7 +78,7 @@ class LoopAction(BaseAction):
         Вызов метода run() для действий из списка actions заданное количество раз, если это было указано.
         """
         interaction = 0
-
+        context.working_node(self.node_id)
         while self.count is None or interaction < self.count:
             for action in self.actions:
                 if not context.running:

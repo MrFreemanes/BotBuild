@@ -28,6 +28,7 @@ class NodeModel(QObject):
         self.id = node_id or str(uuid.uuid4())
         self._pos = pos
         self._params = NODE_REGISTRY[self.action_type]['base_params'].copy()
+        self._params['node_id'] = self.id
 
         self.inputs = {name: PortModel(self.id, self.action_type, name, DirectionType.INPUT) for name in
                        NODE_REGISTRY[self.action_type]['ports'][DirectionType.INPUT]}
