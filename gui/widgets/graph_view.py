@@ -1,3 +1,6 @@
+import logging
+from logging import config
+
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
 
@@ -10,6 +13,7 @@ from gui.widgets.edges.edge_temporary_widget import EdgeTemporaryWidget
 from gui.widgets.edges.edge_widget import EdgeWidget
 from gui.widgets.nodes.node_widget import NodeWidget
 from gui.widgets.potrs.port_widget import PortWidget
+from logs.logger_cfg import cfg
 
 
 class GraphView(QGraphicsView):
@@ -21,6 +25,9 @@ class GraphView(QGraphicsView):
         super().__init__(scene)
         self.setDragMode(QGraphicsView.ScrollHandDrag)
         self.setAcceptDrops(True)
+
+        logging.config.dictConfig(cfg)
+        self.logger = logging.getLogger('log_widget')
 
         self.scene = scene
         self.model = model
@@ -48,6 +55,8 @@ class GraphView(QGraphicsView):
         self.node_widgets[node.id] = node_widget
         self.scene.addItem(node_widget)
 
+        self.logger.debug('View. Add node widget, action_type: %s', node.action_type)
+
     @Slot(NodeModel)
     def node_widget_update_pos(self, node: NodeModel) -> None:
         """
@@ -66,6 +75,8 @@ class GraphView(QGraphicsView):
         node_widget = self.node_widgets[node.id]
         node_widget.widget.set_params(node.get_params())
 
+        self.logger.debug('View. Update params node widget, action_type: %s', node.action_type)
+
     @Slot(NodeModel)
     def node_widget_delete(self, node: NodeModel) -> None:
         """
@@ -75,6 +86,8 @@ class GraphView(QGraphicsView):
         node_widget = self.node_widgets[node.id]
         self.scene.removeItem(node_widget)
         del self.node_widgets[node.id]
+
+        self.logger.debug('View. Delete node widget, action_type: s%', node.action_type)
 
     @Slot(EdgeModel)
     def edge_widget_add(self, edge: EdgeModel) -> None:
@@ -89,6 +102,9 @@ class GraphView(QGraphicsView):
         edge_widget = EdgeWidget(edge, port_1, port_2)
         self.edge_widgets[edge.id] = edge_widget
         self.scene.addItem(edge_widget)
+
+        self.logger.debug('View. Add edge widget, from_port: s%, to_port: s%',
+                          edge.from_port_name, edge.to_port_name)
 
     @Slot(NodeModel)
     def edge_widget_update_pos(self, node: NodeModel) -> None:
@@ -115,6 +131,9 @@ class GraphView(QGraphicsView):
         edge_widget.from_port.edge_id = None
         del self.edge_widgets[edge.id]
         self.scene.removeItem(edge_widget)
+
+        self.logger.debug('View. Delete edge widget, from_port: s%, to_port: s%',
+                          edge.from_port_name, edge.to_port_name)
 
     def temp_edge_create(self, port_widget: PortWidget) -> EdgeTemporaryWidget:
         """
@@ -158,6 +177,8 @@ class GraphView(QGraphicsView):
         self.node_widgets.clear()
         self.edge_widgets.clear()
         self.scene.clear()
+
+        self.logger.debug('View. Clear scene.')
 
     def wheelEvent(self, event) -> None:
         zoom_in = 1.2

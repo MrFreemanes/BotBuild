@@ -5,6 +5,10 @@ from gui.widgets.potrs.port_widget import PortWidget
 
 
 class EdgeTemporaryWidget(QGraphicsPathItem):
+    """
+    Класс временной линии. Первая точка порт, вторая курсор.
+    """
+
     def __init__(self, drag_port: PortWidget):
         super().__init__()
 

@@ -9,6 +9,10 @@ from gui.widgets.potrs.port_widget import PortWidget
 
 
 class NodeWidget(QGraphicsRectItem):
+    """
+    Класс визуального отображения ноды.
+    """
+
     def __init__(self, model: GraphModel, node: NodeModel, interaction_handler):
         super().__init__()
 
@@ -30,6 +34,9 @@ class NodeWidget(QGraphicsRectItem):
         self.input_ports_widget, self.output_ports_widget = self.create_ports()
 
     def create_widget(self) -> BaseActionWidget:
+        """
+        :return: BaseActionWidget - виджет в зависимости от переданного типа действия.
+        """
         return WIDGET_REGISTRY[self.node.action_type](
             self.model,
             self.node,
@@ -37,6 +44,10 @@ class NodeWidget(QGraphicsRectItem):
         )
 
     def create_ports(self) -> tuple[dict[str, PortWidget], dict[str, PortWidget]]:
+        """
+        Создает 2 словаря портов {имя_порта: порт, ...}. Устанавливает их равномерно по правой и левой стороне ноды.
+        :return: ({имя_порт_входа: порт, ...}, {имя_порт_выхода: порт, ...})
+        """
         in_ports = {}
         out_ports = {}
         rect = self.rect()
@@ -58,6 +69,9 @@ class NodeWidget(QGraphicsRectItem):
         return in_ports, out_ports
 
     def update_size(self):
+        """
+        Берет размер виджета на ноде и меняет размер в соответствии с ним.
+        """
         # Размер Node
         w, h = self.widget.get_geometry()
         self.setRect(0, 0, w + 4, h + 4)

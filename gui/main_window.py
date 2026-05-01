@@ -19,16 +19,16 @@ class MainWindow(BaseWindow):
         self.view = GraphView(self.scene, self.model)
         self.graph_compiler = GraphCompiler(self.model)
 
-        run_btn = QPushButton('Run')
-        save_btn = QPushButton('Save')
-        load_btn = QPushButton('load')
+        self.run_btn = QPushButton('Run')
+        self.save_btn = QPushButton('Save')
+        self.load_btn = QPushButton('load')
         sidebar = Sidebar()
 
         layout_btn = QVBoxLayout()
         layout_btn.addWidget(sidebar)
-        layout_btn.addWidget(run_btn)
-        layout_btn.addWidget(save_btn)
-        layout_btn.addWidget(load_btn)
+        layout_btn.addWidget(self.run_btn)
+        layout_btn.addWidget(self.save_btn)
+        layout_btn.addWidget(self.load_btn)
 
         layout = QHBoxLayout()
         layout.addWidget(self.view)
@@ -38,14 +38,12 @@ class MainWindow(BaseWindow):
         widget.setLayout(layout)
         self.setCentralWidget(widget)
 
-        run_btn.clicked.connect(self._run)
-        save_btn.clicked.connect(self.save)
-        load_btn.clicked.connect(self.load)
-        self.graph_compiler.validate_signal.connect(self._dialog_error)
-
     def connect_widget(self) -> None:
         """Подключение виджетов к функциям."""
-        pass
+        self.run_btn.clicked.connect(self._run)
+        self.save_btn.clicked.connect(self.save)
+        self.load_btn.clicked.connect(self.load)
+        self.graph_compiler.validate_signal.connect(self._dialog_error)
 
     def _run(self) -> None:
         chain = self.graph_compiler.compile()

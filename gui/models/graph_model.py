@@ -98,7 +98,6 @@ class GraphModel(QObject):
         :param node_id:
         :param key:
         :param value:
-        :return:
         """
         node = self.nodes[node_id]
         params = node.get_params()
@@ -112,7 +111,6 @@ class GraphModel(QObject):
         """
         Отвечает за удаление ноды и отправку сигнала об этом в node_delete.
         :param node_id:
-        :return:
         """
         node = self.nodes[node_id]
         for edge_id, edge in list(self.edges.items()):

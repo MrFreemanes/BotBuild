@@ -7,6 +7,10 @@ from gui.widgets.potrs.port_widget import PortWidget
 
 
 class EdgeWidget(QGraphicsPathItem):
+    """
+    Класс визуального соединения портов.
+    """
+
     def __init__(self, edge: EdgeModel, from_port: PortWidget, to_port: PortWidget):
         super().__init__()
         self.setPen(QPen(Qt.blue))
